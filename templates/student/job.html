@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ job.title }} - Job Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="bg-full" style="background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c');">
+  <div class="container glass">
+    <h2>{{ job.title }}</h2>
+    <p><strong>Company:</strong> {{ job.company }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Skills required:</strong>
+        {% for s in job.skills_required.split(',') %}
+            <span class="chip">{{ s.strip() }}</span>
+        {% endfor %}
+    </p>
+    <p><strong>About this role:</strong> {{ job.description }}</p>
+
+    {% if resume and score is not none %}
+        <p><strong>Your skill match score:</strong> {{ score }}%</p>
+    {% elif not resume %}
+        <p>Upload a resume to see your match score.</p>
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash">
+        {% for category, msg in messages %}
+          <li class="{{ category }}">{{ msg }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('student_apply', job_id=job.id) }}">
+        <button type="submit">Apply</button>
+    </form>
+
+    <p><a href="{{ url_for('student_dashboard') }}">Back to dashboard</a></p>
+  </div>
+</div>
+</body>
+</html>

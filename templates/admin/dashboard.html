@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Job Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="bg-full" style="background-image: url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b');">
+  <div class="container glass">
+    <div class="dashboard-header">
+        <div>
+            <h2>Admin Dashboard</h2>
+            <p class="dashboard-sub">Monitor users, jobs, and applications.</p>
+        </div>
+        <div>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+
+    <div class="cards-grid">
+        <div class="card-analytics">
+            <h4>Total Users</h4>
+            <div class="value">{{ total_users }}</div>
+            <div class="subtext">All registered accounts on the portal.</div>
+        </div>
+        <div class="card-analytics">
+            <h4>Students</h4>
+            <div class="value">{{ student_count }}</div>
+            <div class="subtext">Users with student role.</div>
+        </div>
+        <div class="card-analytics">
+            <h4>Recruiters</h4>
+            <div class="value">{{ recruiter_count }}</div>
+            <div class="subtext">Companies and HR accounts.</div>
+        </div>
+        <div class="card-analytics">
+            <h4>Active Jobs</h4>
+            <div class="value">{{ total_jobs }}</div>
+            <div class="subtext">Currently open job postings.</div>
+        </div>
+        <div class="card-analytics">
+            <h4>Total Applications</h4>
+            <div class="value">{{ total_applications }}</div>
+            <div class="subtext">All student applications submitted.</div>
+        </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Resume - Job Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Upload Resume</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash">
+        {% for category, msg in messages %}
+          <li class="{{ category }}">{{ msg }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="POST" enctype="multipart/form-data">
+        <label>Resume file (pdf/doc/docx)</label>
+        <input type="file" name="resume" required>
+
+        <label>Your skills (comma separated)</label>
+        <input type="text" name="skills" placeholder="Python, Flask, SQL" required>
+
+        <button type="submit">Upload</button>
+    </form>
+    <p><a href="{{ url_for('student_dashboard') }}">Back to dashboard</a></p>
+</div>
+</body>
+</html>

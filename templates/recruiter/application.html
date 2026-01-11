@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Applications - {{ job.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="bg-full" style="background-image: url('https://images.unsplash.com/photo-1521790361543-f645cf042ec4');">
+  <div class="container glass">
+    <h2>Applications for {{ job.title }} at {{ job.company }}</h2>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Skills required:</strong> {{ job.skills_required }}</p>
+    <p><a href="{{ url_for('recruiter_dashboard') }}">Back to dashboard</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Candidate</th>
+                <th>Email</th>
+                <th>Match Score</th>
+                <th>Latest Skills</th>
+                <th>Applied At</th>
+                <th>Resume</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for app_obj in applications %}
+            {% set latest_resume = app_obj.user.resumes[-1] if app_obj.user.resumes %}
+            <tr>
+                <td>{{ app_obj.user.full_name }}</td>
+                <td>{{ app_obj.user.email }}</td>
+                <td>{{ app_obj.match_score }}%</td>
+                <td>
+                    {% if latest_resume and latest_resume.skills %}
+                        {% for s in latest_resume.skills.split(',') %}
+                            <span class="chip">{{ s.strip() }}</span>
+                        {% endfor %}
+                    {% else %}
+                        Not specified
+                    {% endif %}
+                </td>
+                <td>{{ app_obj.applied_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                    {% if latest_resume %}
+                        <a href="{{ url_for('download_resume', filename=latest_resume.filename) }}" target="_blank">
+                            View Resume
+                        </a>
+                    {% else %}
+                        No resume
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="6">No applications yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

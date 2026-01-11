@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recruiter Dashboard - Job Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        // Simple front-end search filter for the jobs table
+        function filterJobs() {
+            var input = document.getElementById("jobSearch");
+            var filter = input.value.toUpperCase();
+            var table = document.getElementById("jobsTable");
+            var tr = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < tr.length; i++) { // skip header row
+                var tdTitle = tr[i].getElementsByTagName("td")[0];
+                var tdCompany = tr[i].getElementsByTagName("td")[1];
+                var tdLocation = tr[i].getElementsByTagName("td")[2];
+                if (tdTitle || tdCompany || tdLocation) {
+                    var text = (
+                        (tdTitle.textContent || tdTitle.innerText) + " " +
+                        (tdCompany.textContent || tdCompany.innerText) + " " +
+                        (tdLocation.textContent || tdLocation.innerText)
+                    ).toUpperCase();
+                    tr[i].style.display = text.indexOf(filter) > -1 ? "" : "none";
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Top navigation bar -->
+    <header class="top-nav">
+        <div class="top-nav-left">
+            <span class="brand">AI Placement Portal</span>
+        </div>
+        <div class="top-nav-right">
+            <span class="top-nav-user">Recruiter: {{ current_user.full_name }}</span>
+            <a href="{{ url_for('recruiter_post_job') }}">+ Post Job</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </header>
+
+    <!-- Background + dashboard card -->
+    <div class="bg-full" style="background-image: url('https://images.unsplash.com/photo-1521790361543-f645cf042ec4');">
+        <div class="container glass">
+            <div class="dashboard-header">
+                <div>
+                    <h2>Recruiter Dashboard</h2>
+                    <p class="dashboard-sub">
+                        Post jobs, filter them quickly, and review applications in one place.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Summary cards -->
+            <div class="cards-grid">
+                <div class="card-analytics">
+                    <h4>Your Jobs</h4>
+                    <div class="value">{{ jobs|length }}</div>
+                    <div class="subtext">Total positions you have posted.</div>
+                </div>
+                <div class="card-analytics">
+                    <h4>Most Recent Job</h4>
+                    {% if jobs %}
+                        <div class="value">{{ jobs[0].title }}</div>
+                        <div class="subtext">
+                            {{ jobs[0].company }} · {{ jobs[0].location }}
+                        </div>
+                    {% else %}
+                        <div class="value">—</div>
+                        <div class="subtext">Post your first job to get started.</div>
+                    {% endif %}
+                </div>
+                <div class="card-analytics">
+                    <h4>Total Applications</h4>
+                    <div class="value">{{ total_applications }}</div>
+                    <div class="subtext">All applications received for your jobs.</div>
+                </div>
+            </div>
+
+            <!-- About section -->
+            <section class="about-section">
+                <h3>About Recruiter Panel</h3>
+                <p>
+                    Use this panel to manage your company openings and review candidates from
+                    partner colleges. Create new job posts, keep requirements up to date,
+                    and open each job to see detailed applications with skill match scores.
+                </p>
+                <p>
+                    Clear job descriptions and well‑defined skills help students understand
+                    expectations and improve the quality of applications you receive.
+                </p>
+            </section>
+
+            <!-- Search input -->
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                <label for="jobSearch"><strong>Search jobs (title / company / location)</strong></label>
+                <input
+                    type="text"
+                    id="jobSearch"
+                    placeholder="Type to filter your jobs..."
+                    onkeyup="filterJobs()"
+                    style="margin-top: 5px;"
+                >
+            </div>
+
+            <!-- Jobs table -->
+            <h3>Your Jobs</h3>
+            <table id="jobsTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Company</th>
+                        <th>Location</th>
+                        <th>Skills</th>
+                        <th>Posted</th>
+                        <th>Applications</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                        <tr>
+                            <td>{{ job.title }}</td>
+                            <td>{{ job.company }}</td>
+                            <td>{{ job.location }}</td>
+                            <td>
+                                {% for s in job.skills_required.split(',') %}
+                                    <span class="chip">{{ s.strip() }}</span>
+                                {% endfor %}
+                            </td>
+                            <td>{{ job.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td>
+                                <a href="{{ url_for('recruiter_view_applications', job_id=job.id) }}">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">No jobs posted yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <span>© {{ 2026 }} AI Placement Portal · Recruiter Panel</span>
+    </footer>
+</body>
+</html>

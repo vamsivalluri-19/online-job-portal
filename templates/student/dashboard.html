@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard - Job Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Top navigation bar -->
+    <header class="top-nav">
+        <div class="top-nav-left">
+            <span class="brand">AI Placement Portal</span>
+        </div>
+        <div class="top-nav-right">
+            <span class="top-nav-user">Student: {{ current_user.full_name }}</span>
+            <a href="{{ url_for('upload_resume') }}">Upload/Update Resume</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </header>
+
+    <!-- Background hero with dashboard -->
+    <div class="bg-full" style="background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c');">
+        <div class="container glass">
+            <!-- Header inside card -->
+            <div class="dashboard-header">
+                <div>
+                    <h2>Student Dashboard</h2>
+                    <p class="dashboard-sub">
+                        Hi {{ current_user.full_name }}, find your next opportunity.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Summary cards -->
+            <div class="cards-grid">
+                <div class="card-analytics">
+                    <h4>Resume Status</h4>
+                    {% if resume %}
+                        <div class="value">Updated</div>
+                        <div class="subtext">
+                            Last upload: {{ resume.uploaded_at.strftime('%Y-%m-%d') }}
+                        </div>
+                    {% else %}
+                        <div class="value">Missing</div>
+                        <div class="subtext">
+                            Upload a resume to start applying.
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="card-analytics">
+                    <h4>Available Jobs</h4>
+                    <div class="value">{{ jobs|length }}</div>
+                    <div class="subtext">Open positions you can explore.</div>
+                </div>
+
+                <div class="card-analytics">
+                    <h4>Your Primary Skills</h4>
+                    {% if resume and resume.skills %}
+                        <div class="subtext">
+                            {% for s in (resume.skills or '').split(',') %}
+                                <span class="chip">{{ s.strip() }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="subtext">
+                            Add your skills when you upload your resume.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- About portal section -->
+            <section class="about-section">
+                <h3>About This Portal</h3>
+                <p>
+                    This portal connects students with companies offering internships and full‑time roles.
+                    Jobs are posted directly by recruiters, and your skill match score helps you understand
+                    how well your profile fits each opportunity.
+                </p>
+                <p>
+                    Keep your resume updated, apply to matching positions, and track responses from recruiters
+                    through this dashboard.
+                </p>
+            </section>
+
+            <!-- Jobs table -->
+            <h3>Available Jobs</h3>
+            <table class="jobs-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Company</th>
+                        <th>Location</th>
+                        <th>Skills</th>
+                        <th>Posted</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                        <tr>
+                            <td>{{ job.title }}</td>
+                            <td>{{ job.company }}</td>
+                            <td>{{ job.location }}</td>
+                            <td>
+                                {% for s in job.skills_required.split(',') %}
+                                    <span class="chip">{{ s.strip() }}</span>
+                                {% endfor %}
+                            </td>
+                            <td>{{ job.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td>
+                                <a href="{{ url_for('student_job_detail', job_id=job.id) }}">
+                                    Details
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">No jobs available.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Simple footer -->
+    <footer class="footer">
+        <span>© {{ 2026 }} AI Placement Portal · Built for campus placements</span>
+    </footer>
+</body>
+</html>

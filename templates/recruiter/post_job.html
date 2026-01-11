@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post Job - Job Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Post New Job</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash">
+        {% for category, msg in messages %}
+          <li class="{{ category }}">{{ msg }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="POST" action="{{ url_for('recruiter_post_job') }}">
+        <label>Title</label>
+        <input type="text" name="title" required>
+
+        <label>Company</label>
+        <input type="text" name="company" required>
+
+        <label>Location</label>
+        <input type="text" name="location" required>
+
+        <label>Skills required (comma separated)</label>
+        <input type="text" name="skills_required" placeholder="Python, Flask, SQL" required>
+
+        <label>Description</label>
+        <textarea name="description" rows="5" required></textarea>
+
+        <button type="submit">Post Job</button>
+    </form>
+    <p><a href="{{ url_for('recruiter_dashboard') }}">Back to dashboard</a></p>
+</div>
+</body>
+</html>
