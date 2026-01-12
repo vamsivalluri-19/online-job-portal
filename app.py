@@ -137,15 +137,19 @@ def register():
 
     return render_template("auth/register.html")
 
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
+        selected_role = request.form.get("role")  # 'student' or 'recruiter'
 
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
+            if selected_role and user.role != selected_role and user.role != "admin":
+                flash(f"You are registered as {user.role}, not {selected_role}.", "warning")
+                return redirect(url_for("login"))
+
             login_user(user)
             flash("Logged in successfully.", "success")
             if user.role == "admin":
@@ -154,7 +158,10 @@ def login():
                 return redirect(url_for("recruiter_dashboard"))
             else:
                 return redirect(url_for("student_dashboard"))
+
         flash("Invalid credentials.", "danger")
+
+    return render_template("auth/login.html")
 
     return render_template("auth/login.html")
 

@@ -5,37 +5,87 @@
     <title>Register - Job Portal</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-<div class="container">
-    <h2>Create Account</h2>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul class="flash">
-        {% for category, msg in messages %}
-          <li class="{{ category }}">{{ msg }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-    <form method="POST" action="{{ url_for('register') }}">
-        <label>Full name</label>
-        <input type="text" name="full_name" required>
+<body class="login-page">
+    <div class="login-shell">
+        <div class="login-card">
+            <!-- Left illustration (reuse or change image) -->
+            <div class="login-left">
+                <img
+                    src="https://tse2.mm.bing.net/th/id/OIP.dT7yjejyYydk_s4uqle7dQHaE7?rs=1&pid=ImgDetMain&o=7&rm=3"
+                    alt="Sign up illustration"
+                    class="login-illustration"
+                >
+            </div>
 
-        <label>Email</label>
-        <input type="email" name="email" required>
+            <!-- Right registration form -->
+            <div class="login-right">
+                <div class="login-right-inner">
+                    <h1 class="login-title">Create Account</h1>
+                    <p class="login-subtitle">
+                        Fill in your details to register as a student or recruiter.
+                    </p>
 
-        <label>Password</label>
-        <input type="password" name="password" required>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <ul class="flash">
+                            {% for category, msg in messages %}
+                                <li class="{{ category }}">{{ msg }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
 
-        <label>Role</label>
-        <select name="role" required>
-            <option value="student">Student</option>
-            <option value="recruiter">Recruiter</option>
-        </select>
+                    <form method="POST" action="{{ url_for('register') }}">
+                        <label class="login-label">Full name</label>
+                        <div class="login-input-wrapper">
+                            <input
+                                type="text"
+                                name="full_name"
+                                placeholder="Enter your full name"
+                                required
+                            >
+                        </div>
 
-        <button type="submit">Register</button>
-    </form>
-    <p>Already registered? <a href="{{ url_for('login') }}">Login</a></p>
-</div>
+                        <label class="login-label">Email</label>
+                        <div class="login-input-wrapper">
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                required
+                            >
+                        </div>
+
+                        <label class="login-label">Password</label>
+                        <div class="login-input-wrapper">
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Create a password"
+                                required
+                            >
+                        </div>
+
+                        <label class="login-label">Register as</label>
+                        <div class="login-input-wrapper">
+                            <select name="role" required>
+                                <option value="student">Student</option>
+                                <option value="recruiter">Recruiter</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="login-button">
+                            Sign Up
+                        </button>
+                    </form>
+
+                    <p class="login-footer">
+                        Already registered?
+                        <a href="{{ url_for('login') }}">Login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
