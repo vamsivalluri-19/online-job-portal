@@ -50,3 +50,9 @@ python app.py
 
 Vamsi Valluri  
 Online Job Portal – Academic / portfolio project
+# 💼 Online Job Portal
+
+## 🌐 Live Demo
+🔗 https://online-job-app-jj93wqwsrcat4vqpjngjkd.streamlit.app
+
+A free-deployed demo of an Online Job Portal built using **Python, Streamlit, and Flask (backend)**.
