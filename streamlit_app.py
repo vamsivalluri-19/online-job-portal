@@ -2,18 +2,24 @@ import streamlit as st
 
 st.set_page_config(page_title="Online Job Portal", layout="wide")
 
-st.title("Online Job Portal")
-st.write("This is a demo dashboard for my Flask-based Online Job Portal project.")
+st.title("💼 Online Job Portal")
+st.subheader("Free Deployment Demo")
 
-st.subheader("Features")
-st.markdown("""
-- Role-based login: student, recruiter, admin  
-- Resume upload and job applications  
-- Recruiter job posting and application tracking  
+st.write("""
+This is a **Streamlit demo** of the Online Job Portal.
+
+Full backend (Flask + DB) runs locally or on PythonAnywhere.
 """)
 
-st.subheader("How to run full project")
-st.markdown("""
-The full backend is built with **Flask**.  
-Source code: [GitHub repo](https://github.com/vamsivalluri-19/online-job-portal)
-""")
+st.markdown("### 🔑 Login")
+username = st.text_input("Username")
+password = st.text_input("Password", type="password")
+
+if st.button("Login"):
+    if username and password:
+        st.success(f"Welcome, {username}!")
+    else:
+        st.error("Please enter credentials")
+
+st.markdown("---")
+st.info("🚀 Deployed FREE using Streamlit Cloud")
